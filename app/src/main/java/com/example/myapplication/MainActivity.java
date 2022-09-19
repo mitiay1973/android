@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.TypeConverter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        configurationNextButton();
     }
+
+    private void configurationNextButton()
+    {
+        Button addData = (Button) findViewById(R.id.addData);
+        addData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddData.class));
+            }
+        });
+    }
+
     public void GetTextFromSql(View v)
     {
         TextView BaseId = findViewById(R.id.BaseId);
@@ -42,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
                 String query0 = "select count(Base_Id) from Base ";
                 Statement statement0 = connection.createStatement();
                 ResultSet resultSet0 = statement0.executeQuery(query0);
+                int c = 0;
+                while (resultSet0.next())
+                {
+                    c=resultSet0.getInt(1);
+                }
                 BackList.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -51,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+                int finalC = c;
                 NextList.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            if(i[0]!= 7)
+                            if(i[0]!= finalC)
                             {
                                 i[0] = i[0] + 1;
                             }
